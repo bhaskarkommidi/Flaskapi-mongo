@@ -1,6 +1,7 @@
 from flask import Flask, Response, request
 import  pymongo
 import json
+from bson.objectid import ObjectId
 app = Flask(__name__)
 
 try:
@@ -10,7 +11,30 @@ try:
 except:
     print("Can't connect to DB")
 
-@app.route("/", methods=["POST"])
+
+@app.route('/languages', methods=["GET"])
+def get():
+    try:
+        data = list(db.codinglang.find())
+        for language in data:
+            language["_id"] = str(language["_id"])
+        return Response(
+            response = json.dumps(data), 
+            status=500,
+            mimetype="application/json"
+            ) 
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps(
+                {"message":"can't get"}), 
+                status=500,
+                mimetype="application/json"
+                ) 
+
+
+##################################################
+@app.route("/languages", methods=["POST"])
 def create():
     try:
         language = {"name":request.form["name"]}
