@@ -51,5 +51,10 @@ def create():
     except Exception as e:
         print(e)
 
+##################################################
+@app.route("/languages/<id>", methods=["PATCH"])
+def update(id):
+    return id
+
 if __name__ == "__main__":
     app.run(port=3030, debug=True)
