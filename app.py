@@ -2,6 +2,7 @@ from flask import Flask, Response, request
 import  pymongo
 import json
 from bson.objectid import ObjectId
+
 app = Flask(__name__)
 
 try:
@@ -54,7 +55,28 @@ def create():
 ##################################################
 @app.route("/languages/<id>", methods=["PATCH"])
 def update(id):
-    return id
+    try:
+        dbResponse = db.codinglang.update_one(
+            {"_id": ObjectId(id)},
+            {"$set":{"name":request.form["name"]}}
+        )
+        for l in dir(dbResponse):
+            print(f"{l}")
+            return Response(
+            response = json.dumps({"message":"updated!!"}), 
+                status=200,
+                mimetype="application/json"
+                )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"OOPS!! can't update"}), 
+                status=500,
+                mimetype="application/json"
+                )
+
+
 
 if __name__ == "__main__":
     app.run(port=3030, debug=True)
