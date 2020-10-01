@@ -1,7 +1,7 @@
 # Flask-RestAPI with MongoDB & MongoDB-Atlas 🖤 
 <p>  
 <img src="https://devicons.github.io/devicon/devicon.git/icons/python/python-original.svg" alt="python" width="40" height="40"/>
-<img src="https://i1.wp.com/pythonprogramming.altervista.org/wp-content/uploads/2019/03/logo.jpg?fit=900%2C500&ssl=1" alt="Flask" width="40" height="40"/>
+<img src="https://www.kindpng.com/picc/m/188-1882559_python-flask-hd-png-download.png" alt="Flask" width="40" height="40"/>
 <img src="https://devicons.github.io/devicon/devicon.git/icons/mongodb/mongodb-original.svg" alt="mongodb" width="40" height="40"/>
 <img src="https://img.icons8.com/dusk/64/000000/postman-api.png" alt="postman" width="40" height="40"/>
 </p> 
