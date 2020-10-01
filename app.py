@@ -43,7 +43,7 @@ def create():
         print(dbResponse.inserted_id)
         return Response(
             response = json.dumps(
-                {"message":"hi", 
+                {"message":"Created", 
                 "id":f"{dbResponse.inserted_id}"
                 }), 
                 status=200,
@@ -53,11 +53,11 @@ def create():
         print(e)
 
 ##################################################
-@app.route("/languages/<id>", methods=["PATCH"])
-def update(id):
+@app.route("/languages/<string:name>", methods=["PATCH"])
+def update(name):
     try:
         dbResponse = db.codinglang.update_one(
-            {"_id": ObjectId(id)},
+            {"name":name},
             {"$set":{"name":request.form["name"]}}
         )
         # for l in dir(dbResponse):
@@ -82,12 +82,19 @@ def update(id):
                 )
 
 ##################################################
-@app.route("/languages/<id>", methods=["DELETE"])
-def delete(id):
+@app.route("/languages/<string:name>", methods=["DELETE"])
+def delete(name):
     try:
+        dbResponse = db.codinglang.delete_one({"name":name})
+        if dbResponse.deleted_count == 1:
+            return Response(
+                response = json.dumps({"message":"Deleted!!", "name":f"{name}"}), 
+                status=200,
+                mimetype="application/json"
+                )
         return Response(
-            response = json.dumps({"message":"Deleted!!"}), 
-            status=200,
+            response = json.dumps({"message":"Not Found!!", "name":f"{name}"}), 
+            status=404,
             mimetype="application/json"
             )
     except Exception as e:
@@ -97,7 +104,9 @@ def delete(id):
                 status=500,
                 mimetype="application/json"
                 )
-
+            
+        # for l in dir(dbResponse):
+        #     print(f"{l}")
 
 if __name__ == "__main__":
     app.run(port=3030, debug=True)
