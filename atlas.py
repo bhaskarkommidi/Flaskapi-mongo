@@ -2,15 +2,17 @@
 from flask import Flask, Response, request
 import  pymongo
 import json
+import os
 from bson.objectid import ObjectId
+import settings
 
 app = Flask(__name__)
 
-mongo_uri = 'mongodb+srv://admin:sarvi@cluster0.tjmar.mongodb.net/Digi_Flask?retryWrites=true&w=majority'
-app = Flask(__name__) 
+mongo_uri = os.getenv("MONGO_URI")
 client = pymongo.MongoClient(mongo_uri) 
 db = client.get_database('Digi_Flask')  
 col = db.Languages 
+
 
 #########################
 #GET
