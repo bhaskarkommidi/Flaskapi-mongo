@@ -60,14 +60,20 @@ def update(id):
             {"_id": ObjectId(id)},
             {"$set":{"name":request.form["name"]}}
         )
-        for l in dir(dbResponse):
-            print(f"{l}")
+        # for l in dir(dbResponse):
+        #     print(f"{l}")
+        if dbResponse.modified_count == 1:  
             return Response(
-            response = json.dumps({"message":"updated!!"}), 
+                response = json.dumps({"message":"updated!!"}), 
                 status=200,
                 mimetype="application/json"
                 )
-
+        else:
+            return Response(
+                response = json.dumps({"message":"Nothing to Update!!"}), 
+                status=200,
+                mimetype="application/json"
+                )
     except Exception as e:
         print(e)
         return Response(
@@ -75,6 +81,7 @@ def update(id):
                 status=500,
                 mimetype="application/json"
                 )
+##################################################
 
 
 
