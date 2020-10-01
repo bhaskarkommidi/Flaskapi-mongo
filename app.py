@@ -83,7 +83,7 @@ def update(id):
 
 ##################################################
 @app.route("/languages/<id>", methods=["DELETE"])
-def del(id):
+def delete(id):
     try:
         return Response(
             response = json.dumps({"message":"Deleted!!"}), 
