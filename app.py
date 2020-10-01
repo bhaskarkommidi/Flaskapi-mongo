@@ -25,7 +25,7 @@ def get():
             language["_id"] = str(language["_id"])
         return Response(
             response = json.dumps(data,default=str), 
-            status=500,
+            status=200,
             mimetype="application/json"
             ) 
     except Exception as e:
