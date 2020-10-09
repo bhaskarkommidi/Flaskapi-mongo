@@ -3,7 +3,7 @@ from flask import Flask, Response, request
 import  pymongo
 import json
 from bson.objectid import ObjectId
-from security import authenticate, identity
+from Settings.security import authenticate, identity
 from flask_jwt import JWT, jwt_required, current_identity
 
 app = Flask(__name__)

@@ -1,12 +1,13 @@
 # Imports
 from flask import Flask, Response, request
+from bson.objectid import ObjectId
+from Settings.security import authenticate, identity
+from flask_jwt import JWT, jwt_required, current_identity
 import  pymongo
 import json
 import os
-from bson.objectid import ObjectId
-import settings
-from security import authenticate, identity
-from flask_jwt import JWT, jwt_required, current_identity
+import Settings.settings
+
 
 app = Flask(__name__)
 app.secret_key = 'secret'

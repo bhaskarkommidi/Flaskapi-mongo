@@ -1,9 +1,9 @@
 from werkzeug.security import safe_str_cmp
-from user import User
+from model.user import User
 
 users = [
-    User(1, 'saro', 'saro@123'),
-    User(2, 'sarvi', 'sarvi@123'),
+    User(1, 'Saravanan', '@123'),
+    User(2, 'Vijayamuthu', '@321'),
 ]
 
 username_table = {u.username: u for u in users}
