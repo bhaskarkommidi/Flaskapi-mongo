@@ -3,8 +3,12 @@ from flask import Flask, Response, request
 import  pymongo
 import json
 from bson.objectid import ObjectId
+from security import authenticate, identity
+from flask_jwt import JWT, jwt_required, current_identity
 
 app = Flask(__name__)
+app.secret_key = 'secret'
+jwt = JWT(app, authenticate, identity)
 
 try:
     mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS = 1000)
@@ -41,7 +45,9 @@ def get():
 #########################
 #POST
 #########################
+
 @app.route("/languages", methods=["POST"])
+@jwt_required()
 def create():
     try:
         language = {"name":request.form["name"]}
@@ -62,6 +68,7 @@ def create():
 #PATCH
 #########################
 @app.route("/languages/<string:name>", methods=["PATCH"])
+@jwt_required()
 def update(name):
     try:
         dbResponse = db.codinglang.update_one(
@@ -93,6 +100,7 @@ def update(name):
 #DELETE
 #########################
 @app.route("/languages/<string:name>", methods=["DELETE"])
+@jwt_required()
 def delete(name):
     try:
         dbResponse = db.codinglang.delete_one({"name":name})
