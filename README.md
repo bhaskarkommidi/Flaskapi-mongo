@@ -6,6 +6,19 @@
 <img src="https://img.icons8.com/dusk/64/000000/postman-api.png" alt="postman" width="40" height="40"/>
 </p> 
 
+## Folder Structure
+```bash
+📦Flaskapi-mongo
+ ┣ 📂model
+ ┃ ┗ 📜user.py
+ ┣ 📂Settings
+ ┃ ┣ 📜security.py
+ ┃ ┗ 📜settings.py
+ ┣ 📜.env
+ ┣ 📜.gitignore
+ ┣ 📜app.py
+ ┗ 📜atlas.py
+```
 Created a Restful API(CRUD) using Flask MongoDB local server and MongoDB-Atlas use postman 
 
 ## Prerequisite
