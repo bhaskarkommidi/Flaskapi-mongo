@@ -1,35 +1,69 @@
 # Imports
 from flask import Flask, Response, request
-import  pymongo
-import json
-from bson.objectid import ObjectId
+#from bson.objectid import ObjectId
 from Settings.security import authenticate, identity
 from flask_jwt import JWT, jwt_required, current_identity
+from flask_restful import Resource, Api
+from flasgger import Swagger
+from flasgger.utils import swag_from
+from flasgger import LazyString, LazyJSONEncoder
+import  pymongo
+import json
+import os
+import Settings.settings
 
+ 
 app = Flask(__name__)
 app.secret_key = 'secret'
 jwt = JWT(app, authenticate, identity)
 
-try:
-    mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS = 1000)
-    db = mongo.Coding
-    mongo.server_info()
-except:
-    print("Can't connect to DB")
+
+
+mongo_uri = os.getenv("MONGO_URI")
+client = pymongo.MongoClient(mongo_uri) 
+db = client.get_database('Digi_Flask')  
+col = db.Products 
+
+
+ ########### Swagger %%%%%%%%%%%%%%%%%%%%%%%
+# app.config["SWAGGER"] = {"title": "Swagger-UI", "uiversion": 2}
+
+# swagger_config = {
+#     "headers": [],
+#     "specs": [
+#         {
+#             "endpoint": "apispec_1",
+#             "route": "/apispec_1.json",
+#             "rule_filter": lambda rule: True,  # all in
+#             "model_filter": lambda tag: True,  # all in
+#         }
+#     ],
+#     "static_url_path": "/flasgger_static",
+#     # "static_folder": "static",  # must be set by user
+#     "swagger_ui": True,
+#     "specs_route": "/swagger/",
+# }
+
+# template = dict(
+#     swaggerUiPrefix=LazyString(lambda: request.environ.get("HTTP_X_SCRIPT_NAME", ""))
+# )
+
+# app.json_encoder = LazyJSONEncoder
+# swagger = Swagger(app, config=swagger_config, template=template)
 
 
 #########################
 #GET
 #########################
-@app.route('/languages', methods=["GET"])
+@app.route('/products', methods=["GET"])
 def get():
     try:
-        data = list(db.codinglang.find())
-        for language in data:
-            language["_id"] = str(language["_id"])
+        data = list(db.col.find())
+        for product in data:
+            product["_id"] = str(product["_id"])
         return Response(
             response = json.dumps(data,default=str), 
-            status=200,
+            status=500,
             mimetype="application/json"
             ) 
     except Exception as e:
@@ -45,13 +79,12 @@ def get():
 #########################
 #POST
 #########################
-
-@app.route("/languages", methods=["POST"])
+@app.route("/products", methods=["POST"])
 @jwt_required()
 def create():
     try:
-        language = {"name":request.form["name"]}
-        dbResponse = db.codinglang.insert_one(language)
+        product = {"name":request.form["name"]}
+        dbResponse = db.col.insert_one(product)
         print(dbResponse.inserted_id)
         return Response(
             response = json.dumps(
@@ -67,11 +100,11 @@ def create():
 #########################
 #PATCH
 #########################
-@app.route("/languages/<string:name>", methods=["PATCH"])
+@app.route("/products/<string:name>", methods=["PATCH"])
 @jwt_required()
 def update(name):
     try:
-        dbResponse = db.codinglang.update_one(
+        dbResponse = db.col.update_one(
             {"name":name},
             {"$set":{"name":request.form["name"]}}
         )
@@ -99,11 +132,11 @@ def update(name):
 #########################
 #DELETE
 #########################
-@app.route("/languages/<string:name>", methods=["DELETE"])
+@app.route("/products/<string:name>", methods=["DELETE"])
 @jwt_required()
 def delete(name):
     try:
-        dbResponse = db.codinglang.delete_one({"name":name})
+        dbResponse = db.col.delete_one({"name":name})
         if dbResponse.deleted_count == 1:
             return Response(
                 response = json.dumps({"message":"Deleted!!", "name":f"{name}"},default=str), 
@@ -111,7 +144,7 @@ def delete(name):
                 mimetype="application/json"
                 )
             # for l in dir(dbResponse):
-            # print(f"{l}")
+            #      print(f"{l}")
         return Response(
             response = json.dumps({"message":"Not Found!!", "name":f"{name}"},default=str), 
             status=404,
@@ -126,6 +159,8 @@ def delete(name):
                 )
             
 
+
+api.add_resource(AwesomeAPI, '/awesome')
 
 if __name__ == "__main__":
     app.run(port=3030, debug=True)
