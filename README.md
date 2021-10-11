@@ -1,4 +1,4 @@
-# Flask-RestAPI with MongoDB & MongoDB-Atlasgit 
+# Flask-RestAPI with MongoDB  
 <p>  
 <img src="https://devicons.github.io/devicon/devicon.git/icons/python/python-original.svg" alt="python" width="40" height="40"/>
 <img src="https://www.kindpng.com/picc/m/188-1882559_python-flask-hd-png-download.png" alt="Flask" width="40" height="40"/>
@@ -17,7 +17,7 @@
  ┣ 📜.env
  ┣ 📜.gitignore
  ┣ 📜app.py
- ┗ 📜atlas.py
+ 
 ```
 Created a Restful API(CRUD) using Flask MongoDB local server and MongoDB-Atlas use postman 
 
@@ -49,7 +49,6 @@ pip install python-dotenv
 🔹 Install The Above #Installation
 🔹 Activate your venv
 🔹 For local db server run py app.py
-🔹 For Atlas server run py atlas.py
 🔹 Test API Through Postman
 🔹🔹🔹🔹🔹🔹
 *NOTE: For Atlas server You have to create .env and place your mongodb_url*
