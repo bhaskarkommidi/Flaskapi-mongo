@@ -83,8 +83,13 @@ def get():
 @jwt_required()
 def create():
     try:
-        product = {"name":request.form["name"]}
-        dbResponse = db.col.insert_one(product)
+        sku = {"sku":request.form["sku"]}
+        name = {"name":request.form["name"]}
+        description = {"description":request.form["description"]}
+        category = {"category":request.form["category"]}
+        price = {"price":request.form["price"]}
+        metadata = {"metadata":request.form["metadata"]}
+        dbResponse = db.col.insert_one(name)
         print(dbResponse.inserted_id)
         return Response(
             response = json.dumps(
@@ -106,7 +111,7 @@ def update(name):
     try:
         dbResponse = db.col.update_one(
             {"name":name},
-            {"$set":{"name":request.form["name"]}}
+            {"$set":{"sku":request.form["sku"],"name":request.form["name"],"description":request.form["description"],"category":request.form["category"],"price":request.form["price"],"metadata":request.form["metadata"]}}
         )
         # for l in dir(dbResponse):
         #     print(f"{l}")
@@ -160,7 +165,7 @@ def delete(name):
             
 
 
-api.add_resource(AwesomeAPI, '/awesome')
+
 
 if __name__ == "__main__":
     app.run(port=3030, debug=True)
